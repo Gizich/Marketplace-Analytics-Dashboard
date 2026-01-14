@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { 
   LineChart, Line, BarChart, Bar, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend 
 } from 'recharts';
@@ -132,11 +132,10 @@ export default function MarketplaceAnalytics() {
     products.find(p => p.id === selectedProductId) || products[0], 
   [products, selectedProductId]);
 
-  // Сброс выбора при смене платформы
-  useMemo(() => {
-    if (!products.find(p => p.id === selectedProductId)) {
-      setSelectedProductId(products[0].id);
-    }
+  // Сброс выбора при смене платформы (ИСПРАВЛЕНО: используется useEffect вместо useMemo)
+  useEffect(() => {
+    // При смене платформы переключаемся на первый товар из списка новой платформы
+    setSelectedProductId(PRODUCTS_DB[platform][0].id);
   }, [platform]);
 
   // Filter Data Logic
